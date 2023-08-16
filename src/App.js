@@ -1,74 +1,42 @@
-import React, { useState } from "react";
-import SingleColor from "./SingleColor";
-
+import { useState } from "react";
 import Values from "values.js";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import SearchForm from "./SearchForm";
+import ColorList from "./ColorList";
 
-function App() {
-  const [color, setColor] = useState("#f15025");
-  const [weight, setWeight] = useState(10);
-  const [error, setError] = useState(false);
+const App = () => {
   const [colorList, setColorList] = useState(new Values("#f15025").all(10));
+  const [weight, setWeight] = useState(10);
 
-  function handleSubmit(event) {
-    event.preventDefault();
+  const addColorsToColorList = (color, weight) => {
     try {
       const wt = parseInt(weight);
-      let colors = new Values(color).all(wt);
+      const colors = new Values(color).all(wt);
       setColorList(colors);
+      setWeight(wt);
     } catch (error) {
-      setError(true);
-      console.log(error);
+      toast.error(error.message);
     }
-  }
+  };
 
   return (
     <>
-      <section className="container">
-        <h3>Color Shades Generator</h3>
-        <form className="color-form" onSubmit={handleSubmit}>
-          <div className="input">
-            <label htmlFor="color">Color: </label>
-            <input
-              type="text"
-              name="color"
-              value={color}
-              className={error ? "error" : null}
-              onChange={(event) => {
-                setColor(event.target.value);
-              }}
-            />
-          </div>
-          <div className="input">
-            <label htmlFor="weight">Weight: </label>
-            <input
-              type="number"
-              name="weight"
-              value={weight}
-              onChange={(event) => {
-                setWeight(event.target.value);
-              }}
-            />
-          </div>
-          <button className="btn" type="submit">
-            Generate
-          </button>
-        </form>
-      </section>
-      <section className="colors">
-        {colorList.map((color, index) => {
-          return (
-            <SingleColor
-              key={index}
-              {...color}
-              hex={color.hex}
-              index={index}
-              wt={weight}
-            />
-          );
-        })}
-      </section>
+      <SearchForm addColorsToColorList={addColorsToColorList} />
+      <ColorList colorList={colorList} weight={weight} />
+      <ToastContainer
+        position="top-center"
+        autoClose={3000}
+        hideProgressBar
+        newestOnTop
+        closeOnClick
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
     </>
   );
-}
+};
 
 export default App;

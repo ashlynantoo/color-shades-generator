@@ -89,11 +89,13 @@ p {
   gap: 1rem;
 }
 
-.color-form {
+.color-form,
+.group {
   display: flex;
   gap: 1rem;
   flex-wrap: wrap;
   justify-content: center;
+  align-items: center;
 }
 
 .input {
@@ -114,12 +116,14 @@ input {
   border-radius: var(--radius);
 }
 
-input.error {
-  border: 2px solid var(--clr-red-dark);
+input.color-picker {
+  padding: 0;
+  width: 2rem;
+  height: 2rem;
 }
 
 .btn {
-  background: var(--clr-primary-5);
+  background: var(--clr-black);
   padding: 0.5rem;
   font-size: 1.2rem;
   border-color: transparent;
@@ -179,11 +183,11 @@ input.error {
 }
 
 .color {
-  padding: 1rem 1rem;
+  padding: 1rem;
   cursor: pointer;
   font-size: 1rem;
   text-transform: none;
-  height: 100px;
+  height: 120px;
 }
 
 .percent-value {
@@ -201,16 +205,5 @@ input.error {
 }
 
 .color-light .color-value {
-  color: var(--clr-white);
-}
-
-.alert {
-  color: var(--clr-black);
-  text-transform: uppercase;
-  font-size: 0.85rem;
-  margin-top: 0.5rem;
-}
-
-.color-light .alert {
   color: var(--clr-white);
 }

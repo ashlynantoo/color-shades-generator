@@ -1,33 +1,32 @@
-import React, { useState, useEffect } from "react";
+import { toast } from "react-toastify";
 
 const SingleColor = (props) => {
-  const { rgb, weight, hex, index, wt } = props;
-  const [alert, setAlert] = useState(false);
-  const currentColor = rgb.join(",");
+  const { color, index, wt } = props;
+  const { hex, weight } = color;
   const hexValue = `#${hex}`;
   const midValue = Math.floor(100 / wt);
 
-  useEffect(() => {
-    const timeout = setTimeout(() => {
-      setAlert(false);
-    }, 300);
-    return () => {
-      clearTimeout(timeout);
-    };
-  }, [alert]);
+  const copyToClipboard = async () => {
+    if (navigator.clipboard) {
+      try {
+        await navigator.clipboard.writeText(hexValue);
+        toast.success(`Color ${hexValue} copied to clipboard`);
+      } catch (error) {
+        toast.error(`Failed to copy color ${hexValue} to clipboard`);
+      }
+    } else {
+      toast.error("Clipboard access not available");
+    }
+  };
 
   return (
     <article
-      className={index >= midValue ? "color color-light" : "color"}
-      style={{ backgroundColor: `rgb(${currentColor})` }}
-      onClick={() => {
-        setAlert(true);
-        navigator.clipboard.writeText(hexValue);
-      }}
+      className={index > midValue ? "color color-light" : "color"}
+      style={{ backgroundColor: hexValue }}
+      onClick={copyToClipboard}
     >
       <p className="percent-value">{weight}%</p>
       <p className="color-value">{hexValue}</p>
-      {alert && <p className="alert">copied to clipboard</p>}
     </article>
   );
 };
